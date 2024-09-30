@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Button, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import {
   requestForegroundPermissionsAsync,
@@ -13,7 +13,7 @@ import { styles } from './styles';
 
 const MapScreen = ({ onLogout }: { onLogout: () => void }) => {
   const [location, setLocation] = useState<LocationObject | null>(null);
-  const [isTracking, setIsTracking] = useState<boolean>(true);
+  const [isTracking, setIsTracking] = useState<boolean>(false); // Desligado por padrão
 
   const mapRef = useRef<MapView>(null);
 
@@ -40,6 +40,7 @@ const MapScreen = ({ onLogout }: { onLogout: () => void }) => {
           distanceInterval: 1
         }, (response) => {
           setLocation(response);
+          console.log('Received new locations in foreground:', response);
           mapRef.current?.animateCamera({
             center: response.coords
           });
@@ -54,6 +55,7 @@ const MapScreen = ({ onLogout }: { onLogout: () => void }) => {
   }, [isTracking]);
 
   const handleLogout = async () => {
+    setIsTracking(false); // Parar o rastreamento ao fazer logout
     await AsyncStorage.removeItem('username');
     await AsyncStorage.removeItem('password');
     onLogout();
@@ -62,15 +64,15 @@ const MapScreen = ({ onLogout }: { onLogout: () => void }) => {
   return (
     <View style={styles.container}>
       <View style={localStyles.buttonContainer}>
-        <Button
-          title={isTracking ? "Desligar Localização" : "Ligar Localização"}
-          onPress={() => setIsTracking(!isTracking)}
-        />
-        <Button
-          title="Logout"
-          onPress={handleLogout}
-          color="red"
-        />
+        <TouchableOpacity onPress={() => setIsTracking(!isTracking)}>
+          <Image
+            source={isTracking ? require('./assets/botao_desligado.png') : require('./assets/botao_ligado.png')}
+            style={localStyles.buttonImage}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout}>
+          <Text style={localStyles.logoutButton}>Logout</Text>
+        </TouchableOpacity>
       </View>
       {
         isTracking ? (
@@ -110,6 +112,15 @@ const localStyles = StyleSheet.create({
     zIndex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  buttonImage: {
+    width: 50, // Ajuste conforme necessário
+    height: 50, // Ajuste conforme necessário
+  },
+  logoutButton: {
+    color: 'red',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

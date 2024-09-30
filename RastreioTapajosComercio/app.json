@@ -12,7 +12,12 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationAlwaysUsageDescription": "This app uses your location to track your movements.",
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to track your movements.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app uses your location to track your movements."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -20,6 +25,8 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
         "ACCESS_BACKGROUND_LOCATION"
       ]
     },

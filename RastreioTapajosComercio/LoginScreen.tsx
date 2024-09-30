@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, Text, TextInput } from 'react-native';
+import { View, Button, Text, TextInput, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './styles';
 
@@ -19,6 +19,11 @@ const LoginScreen = ({ onLogin }: { onLogin: () => void }) => {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('./assets/logotapajoscomercio.png')}
+        style={styles.logo}
+        resizeMode="contain"
+      />
       <Text>Login</Text>
       <TextInput
         placeholder="Username"

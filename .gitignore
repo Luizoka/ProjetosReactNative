@@ -129,6 +129,43 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build directories
+build/
+dist/
+
+# IDE specific files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Expo specific files
+.expo/
+.expo-shared/
+
+# React Native specific files
+*.keystore
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig
+
 # Ignore .txt files in the root directory
 /*.txt
 

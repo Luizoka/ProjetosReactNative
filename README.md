@@ -12,7 +12,6 @@
   - [Instalação](#instalação-do-web)
   - [Uso](#uso-do-web)
 - [Contribuição](#contribuição)
-- [Licença](#licença)
 
 ## Introdução
 Este repositório contém três componentes principais:
@@ -36,7 +35,7 @@ Este repositório contém três componentes principais:
     Crie um arquivo `.env` na raiz do diretório `api` e adicione suas variáveis de ambiente.
     ```env
     PORT=3000
-    DATABASE_URL=mongodb://localhost:27017/sua-base-de-dados
+    DATABASE_URL=mysql://usuario:senha@localhost:3306/sua-base-de-dados
     JWT_SECRET=sua-chave-secreta
     ```
 
@@ -50,6 +49,7 @@ A API fornece os seguintes endpoints:
 - `POST /api/users/login`: Autenticação de usuários.
 - `POST /api/users/register`: Registro de novos usuários.
 - `GET /api/users/user/`: Obtenção de perfil de usuário (requer autenticação).
+- `PUT /api/users/location`: Atualização da localização do usuário.
 
 ## App
 
@@ -112,6 +112,3 @@ A aplicação web permite que os usuários:
 
 ## Contribuição
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
-
-## Licença
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.

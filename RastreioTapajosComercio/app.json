@@ -27,8 +27,12 @@
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_BACKGROUND_LOCATION"
-      ]
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -39,7 +43,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow RastreioTapajosComercio to use your location."
         }
-      ]
+      ],
+      "expo-font"
     ]
   }
 }

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: mysql:8.0
@@ -13,6 +15,7 @@ services:
   backend:
     build:
       context: ./backend
+    container_name: apirastreiotc-backend-1
     ports:
       - "3000:3000"
     volumes:

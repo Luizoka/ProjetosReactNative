@@ -121,6 +121,7 @@ const localStyles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
     fontWeight: 'bold',
+    // fontFamily: 'Poppins-Regular', // Comentado temporariamente
   },
 });
 

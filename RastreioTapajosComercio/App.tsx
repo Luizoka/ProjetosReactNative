@@ -1,73 +1,72 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import * as Font from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SplashScreen from 'expo-splash-screen';
+// import * as Font from 'expo-font'; // Comentado temporariamente
 import LoginScreen from './LoginScreen';
 import MapScreen from './MapScreen';
-import { stopBackgroundUpdate } from './locationTask';
+import { stopBackgroundUpdate } from './locationTask'; // Importar a função de parar o rastreamento
 
-SplashScreen.preventAutoHideAsync();
-
-const loadFonts = () => {
-  return Font.loadAsync({
-    'CustomFont': require('./fonts/Poppins-Regular.ttf'),
-  });
-};
-
-export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(true); // Alterado para true temporariamente
 
   useEffect(() => {
-    const checkLogin = async () => {
-      const storedUsername = await AsyncStorage.getItem('username');
-      const storedPassword = await AsyncStorage.getItem('password');
-      if (storedUsername && storedPassword) {
-        console.log(`Stored Username: ${storedUsername}, Stored Password: ${storedPassword}`);
+    const checkLoginStatus = async () => {
+      const userId = await AsyncStorage.getItem('userId');
+      if (userId) {
         setIsLoggedIn(true);
-        // Não iniciar o rastreamento de localização em segundo plano automaticamente
       }
     };
 
-    checkLogin();
-
-    return () => {
-      stopBackgroundUpdate(); // Parar rastreamento em segundo plano ao desmontar
-    };
-  }, []);
-
-  useEffect(() => {
     const loadResources = async () => {
       try {
-        await loadFonts();
+        // await Font.loadAsync({
+        //   'Poppins-Regular': require('./fonts/Poppins-Regular.ttf'), // Substitua pelo caminho correto da sua fonte
+        // });
       } catch (e) {
         console.warn(e);
       } finally {
         setFontsLoaded(true);
-        SplashScreen.hideAsync();
       }
     };
 
     loadResources();
+    checkLoginStatus();
   }, []);
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    // Não iniciar o rastreamento de localização em segundo plano automaticamente
-  };
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('username');
+    await AsyncStorage.removeItem('password');
+    await stopBackgroundUpdate(); // Parar o rastreamento de localização em segundo plano
     setIsLoggedIn(false);
-    stopBackgroundUpdate(); // Parar rastreamento em segundo plano
   };
 
   if (!fontsLoaded) {
-    return null; // Retorna null até que as fontes sejam carregadas
+    return null;
   }
 
-  if (!isLoggedIn) {
-    return <LoginScreen onLogin={handleLogin} />;
-  }
+  return (
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      {isLoggedIn ? (
+        <MapScreen onLogout={handleLogout} />
+      ) : (
+        <LoginScreen onLogin={() => setIsLoggedIn(true)} />
+      )}
+    </View>
+  );
+};
 
-  return <MapScreen onLogout={handleLogout} />;
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
+export default App;

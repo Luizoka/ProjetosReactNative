@@ -6,12 +6,12 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'CustomFont', // Aplicar a fonte personalizada
+    // fontFamily: 'CustomFont', // Comentado temporariamente
   },
   map: {
     flex: 1,
     width: '100%',
-    fontFamily: 'CustomFont', // Aplicar a fonte personalizada
+    // fontFamily: 'CustomFont', // Comentado temporariamente
   },
   input: {
     height: 40,
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
     width: '80%', // Ajustar a largura conforme necessário
-    fontFamily: 'CustomFont', // Aplicar a fonte personalizada
+    // fontFamily: 'CustomFont', // Comentado temporariamente
   },
   logo: {
     width: 200, // Ajustar a largura conforme necessário
@@ -31,6 +31,6 @@ export const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'CustomFont', // Aplicar a fonte personalizada
+    // fontFamily: 'CustomFont', // Comentado temporariamente
   },
 });

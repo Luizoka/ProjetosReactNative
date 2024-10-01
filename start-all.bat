@@ -15,7 +15,7 @@ REM Voltar para o diretório raiz
 cd ..
 
 REM Navegar para a pasta da página web e iniciar com React
-cd webrastreiotapajoscomercio
-start npm start
+@REM cd webrastreiotapajoscomercio
+@REM start npm start
 
 @REM start-all.bat

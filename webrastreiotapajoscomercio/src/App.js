@@ -5,8 +5,8 @@ import Map from './Map'; // Import the Map component
 function App() {
   return (
     <div className="App">
-      <h1>Rastreio Tapajós Comercio</h1>
-      <div style={{ width: '100%', height: '400px' }}>
+      <h1>Tapajós Comercio</h1>
+      <div className="map-container">
         <Map /> {/* Render the Map component */}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 
 const containerStyle = {
@@ -10,19 +10,6 @@ const center = {
   lat: -2.430885, // Adjusted to be closer to the markers
   lng: -54.727021
 };
-
-const fakeMarkers = [
-  { id: 1, position: { lat: -2.419021, lng: -54.730271 }, name: 'João' },
-  { id: 2, position: { lat: -2.430885, lng: -54.727021 }, name: 'Fernando' },
-  { id: 3, position: { lat: -2.455229, lng: -54.763669 }, name: 'Pedro' },
-  // { id: 4, position: { lat: -2.420000, lng: -54.731000 }, name: 'Maria' },
-  // { id: 5, position: { lat: -2.432000, lng: -54.728000 }, name: 'Ana' },
-  // { id: 6, position: { lat: -2.450000, lng: -54.760000 }, name: 'Carlos' },
-  // { id: 7, position: { lat: -2.425000, lng: -54.735000 }, name: 'Lucas' },
-  // { id: 8, position: { lat: -2.435000, lng: -54.740000 }, name: 'Mariana' },
-  // { id: 9, position: { lat: -2.445000, lng: -54.750000 }, name: 'Paulo' },
-  { id: 10, position: { lat: -2.455000, lng: -54.755000 }, name: 'Beatriz' }
-];
 
 const mapOptions = {
   disableDefaultUI: true, // Disable default UI
@@ -38,6 +25,42 @@ const hidePoiStyles = [
 
 function Map() {
   const [showPoi, setShowPoi] = useState(true);
+  const [markers, setMarkers] = useState([]);
+
+  useEffect(() => {
+    const fetchUserData = async (userId) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/users/user/${userId}`);
+        const data = await response.json();
+        
+        // Ensure latitude and longitude are numbers
+        const lat = parseFloat(data.latitude);
+        const lng = parseFloat(data.longitude);
+
+        if (isNaN(lat) || isNaN(lng)) {
+          console.error(`Invalid latitude or longitude for user ${userId}:`, data);
+          return null;
+        }
+
+        return {
+          id: data.id,
+          position: { lat, lng },
+          name: data.name
+        };
+      } catch (error) {
+        console.error(`Error fetching user data for user ${userId}:`, error);
+        return null;
+      }
+    };
+
+    const fetchAllUsers = async () => {
+      const userIds = [1, 2, 3]; // Example user IDs
+      const userMarkers = await Promise.all(userIds.map(fetchUserData));
+      setMarkers(userMarkers.filter(marker => marker !== null));
+    };
+
+    fetchAllUsers();
+  }, []);
 
   const togglePoi = () => {
     setShowPoi(!showPoi);
@@ -48,7 +71,7 @@ function Map() {
       <button onClick={togglePoi} style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1000 }}>
         {showPoi ? 'Esconder Icones' : 'Mostrar Icones'}
       </button>
-      <LoadScript googleMapsApiKey="AIzaSyC3CEidVY4eYwNtsyQ0VJ9fEx1ApPj1QQs">
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
@@ -58,7 +81,7 @@ function Map() {
             styles: showPoi ? [] : hidePoiStyles
           }} // Apply map options and styles
         >
-          {fakeMarkers.map(marker => (
+          {markers.map(marker => (
             <MarkerF
               key={marker.id}
               position={marker.position}

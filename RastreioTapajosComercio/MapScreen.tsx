@@ -10,6 +10,7 @@ import {
 } from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './styles';
+import { startBackgroundUpdate, stopBackgroundUpdate } from './locationTask'; // Importar funções de rastreamento
 
 const MapScreen = ({ onLogout }: { onLogout: () => void }) => {
   const [location, setLocation] = useState<LocationObject | null>(null);
@@ -40,12 +41,15 @@ const MapScreen = ({ onLogout }: { onLogout: () => void }) => {
           distanceInterval: 1
         }, (response) => {
           setLocation(response);
-          console.log('Received new locations in foreground:', response);
+          console.log('Received new locations in foregrounda:', response);
           mapRef.current?.animateCamera({
             center: response.coords
           });
         });
+        await startBackgroundUpdate(); // Iniciar rastreamento em segundo plano
       })();
+    } else {
+      stopBackgroundUpdate(); // Parar rastreamento em segundo plano
     }
     return () => {
       if (subscription) {

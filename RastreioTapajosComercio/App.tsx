@@ -8,8 +8,8 @@ import MapScreen from './MapScreen';
 import { stopBackgroundUpdate } from './locationTask'; // Importar a função de parar o rastreamento
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [fontsLoaded, setFontsLoaded] = useState(true); // Alterado para true temporariamente
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Mudar para entrar automaticamente
+  const [fontsLoaded, setFontsLoaded] = useState(false); // Alterado para true temporariamente
 
   useEffect(() => {
     const checkLoginStatus = async () => {
